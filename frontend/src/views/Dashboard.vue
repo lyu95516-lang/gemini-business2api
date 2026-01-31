@@ -6,9 +6,16 @@
         :key="stat.label"
         class="rounded-3xl border border-border bg-card p-6"
       >
-        <p class="text-xs uppercase tracking-[0.3em] text-muted-foreground">{{ stat.label }}</p>
-        <p class="mt-4 text-3xl font-semibold text-foreground">{{ stat.value }}</p>
-        <p class="mt-2 text-xs text-muted-foreground">{{ stat.caption }}</p>
+        <div class="flex items-start justify-between gap-3">
+          <div class="flex-1 min-w-0">
+            <p class="text-xs uppercase tracking-[0.3em] text-muted-foreground">{{ stat.label }}</p>
+            <p class="mt-3 text-3xl font-semibold text-foreground tabular-nums">{{ stat.value }}</p>
+            <p class="mt-2 text-xs leading-relaxed text-muted-foreground">{{ stat.caption }}</p>
+          </div>
+          <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full" :class="stat.iconBg">
+            <Icon :icon="stat.icon" class="h-5 w-5" :class="stat.iconColor" />
+          </div>
+        </div>
       </div>
     </section>
 
@@ -50,6 +57,7 @@
 
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { Icon } from '@iconify/vue'
 import { statsApi } from '@/api'
 import HelpTip from '@/components/ui/HelpTip.vue'
 import {
@@ -68,10 +76,38 @@ type ChartInstance = {
 }
 
 const stats = ref([
-  { label: '账号总数', value: '0', caption: '账号池中已加载的总数量。' },
-  { label: '活跃账号', value: '0', caption: '未过期、未禁用、未限流且可用。' },
-  { label: '失败账号', value: '0', caption: '自动禁用或已过期，需要处理。' },
-  { label: '限流账号', value: '0', caption: '触发 429 限流，冷却中。' },
+  {
+    label: '账号总数',
+    value: '0',
+    caption: '账号池中的总数量',
+    icon: 'lucide:database',
+    iconBg: 'bg-sky-100',
+    iconColor: 'text-sky-600'
+  },
+  {
+    label: '活跃账号',
+    value: '0',
+    caption: '正常运行中，可随时调用',
+    icon: 'lucide:check-circle',
+    iconBg: 'bg-emerald-100',
+    iconColor: 'text-emerald-600'
+  },
+  {
+    label: '失败账号',
+    value: '0',
+    caption: '已禁用或过期，需要处理',
+    icon: 'lucide:alert-circle',
+    iconBg: 'bg-red-100',
+    iconColor: 'text-red-600'
+  },
+  {
+    label: '限流账号',
+    value: '0',
+    caption: '触发限流，正在冷却中',
+    icon: 'lucide:clock',
+    iconBg: 'bg-amber-100',
+    iconColor: 'text-amber-600'
+  },
 ])
 
 const trendData = ref<number[]>([])
