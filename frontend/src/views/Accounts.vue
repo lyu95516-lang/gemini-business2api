@@ -1874,6 +1874,14 @@ const handleImport = async () => {
         updated.mail_refresh_token = item.mail_refresh_token
         updated.mail_tenant = item.mail_tenant
         updated.mail_password = item.mail_password
+      } else if (item.mail_provider === 'cfworker') {
+        updated.mail_password = ''
+        updated.mail_jwt_token = item.mail_jwt_token
+        updated.mail_base_url = item.mail_base_url
+        updated.mail_domain = item.mail_domain
+        updated.mail_client_id = undefined
+        updated.mail_refresh_token = undefined
+        updated.mail_tenant = undefined
       } else {
         updated.mail_password = item.mail_password
         updated.mail_client_id = undefined
